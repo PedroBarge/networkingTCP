@@ -5,8 +5,5 @@ public class Main {
         System.out.println("Server TCP");
         Server server = new Server();
         server.start(6666);
-        System.out.println("AA");
-
     }
-
 }
