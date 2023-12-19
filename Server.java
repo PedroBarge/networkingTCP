@@ -1,47 +1,33 @@
 import java.net.*;
 import java.io.*;
-
 public class Server {
     private ServerSocket serverSocket;
     private Socket clientSocket;
-    private PrintWriter printWriter;
-    private BufferedReader bufferedReader;
+    private PrintWriter out;
+    private BufferedReader in;
 
-    public void startServer(int port) throws IOException {
+    public void start(int port) throws IOException {
         serverSocket = new ServerSocket(port);
+        boolean isRuning = true;
         clientSocket = serverSocket.accept();
-
-        printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-        bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        printWriter.println("Say hello server");
-
-        String greeting = bufferedReader.readLine();
-        var ip = getIp();
-        var portClient = getPortClient();
-
-        if (greeting.contains("hello server")) {
-            System.out.println(ip);
-            System.out.println(portClient);
-            printWriter.println("hello client");
-        } else {
-            System.out.println(ip);
-            System.out.println(portClient);
-            printWriter.println("unrecognised greeting");
+        while (isRuning) {
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out.println("Write something");
+            String greeting = in.readLine().toLowerCase();
+            if ("hello server".equals(greeting)) {
+                out.println("hello client");
+            }
+            if (greeting.equals("quit")) {
+                isRuning = false;
+            }
+            out.println("Listening...");
         }
     }
 
-    public int getPortClient() {
-        return clientSocket.getPort();
-    }
-
-    public InetAddress getIp() {
-        return clientSocket.getInetAddress();
-    }
-
-
     public void stop() throws IOException {
-        bufferedReader.close();
-        printWriter.close();
+        in.close();
+        out.close();
         clientSocket.close();
         serverSocket.close();
     }
