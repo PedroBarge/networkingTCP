@@ -5,6 +5,8 @@ public class Main {
         System.out.println("Server TCP");
         Server server = new Server();
         server.startServer(6666);
+        server.getIp();
+        server.getPortClient();
         server.stop();
     }
     public void tryGetIpAdress(){

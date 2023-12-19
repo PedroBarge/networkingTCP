@@ -30,11 +30,11 @@ public class Server {
         }
     }
 
-    private int getPortClient() {
+    public int getPortClient() {
         return clientSocket.getPort();
     }
 
-    private InetAddress getIp() {
+    public InetAddress getIp() {
         return clientSocket.getInetAddress();
     }
 
