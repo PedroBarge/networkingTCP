@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import java.util.Scanner;
 
 public class Server {
     private ServerSocket serverSocket;
@@ -11,6 +12,7 @@ public class Server {
         serverSocket = new ServerSocket(port);
         boolean isRuning = true;
         newSocket = serverSocket.accept();
+        Scanner scanner = new Scanner(System.in);
 
         out = new PrintWriter(newSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(newSocket.getInputStream()));
@@ -19,7 +21,7 @@ public class Server {
             out.print("Server: ");
             out.println("Write something");
 
-            String msgIncome = in.readLine().toLowerCase();
+            String msgIncome = in.readLine();
             InetAddress clientAddress = newSocket.getInetAddress();
             String adressUser = clientAddress.getHostAddress();
             var portUser = newSocket.getLocalPort();
@@ -37,12 +39,15 @@ public class Server {
                 out.print("Server: ");
                 out.println("Listening...");
             }
-            System.out.println("User said: " + msgIncome);
-            System.out.println("IP: " + adressUser);
-            System.out.println("Port: " + portUser);
-            System.out.println();
-
+            sout(msgIncome, adressUser, portUser);
         }
+    }
+
+    private static void sout(String msgIncome, String adressUser, int portUser) {
+        System.out.println("User said: " + msgIncome);
+        System.out.println("IP: " + adressUser);
+        System.out.println("Port: " + portUser);
+        System.out.println();
     }
 
     public void stop() throws IOException {
