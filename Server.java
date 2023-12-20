@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+
 public class Server {
     private ServerSocket serverSocket;
     private Socket newSocket;
@@ -10,24 +11,37 @@ public class Server {
         serverSocket = new ServerSocket(port);
         boolean isRuning = true;
         newSocket = serverSocket.accept();
+
         out = new PrintWriter(newSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(newSocket.getInputStream()));
+
         while (isRuning) {
             out.print("Server: ");
             out.println("Write something");
-            String greeting = in.readLine().toLowerCase();
-            if ("hello server".equals(greeting)) {
+
+            String msgIncome = in.readLine().toLowerCase();
+            InetAddress clientAddress = newSocket.getInetAddress();
+            String adressUser = clientAddress.getHostAddress();
+            var portUser = newSocket.getLocalPort();
+
+            if ("hello server".equals(msgIncome)) {
                 out.print("Server: ");
                 out.println("hello client");
             }
-            if (greeting.contains("quit")) {
+            if (msgIncome.contains("quit")) {
                 out.println("Exiting...");
+                stop();
                 isRuning = false;
             }
-            if (!greeting.contains("hello server") && !greeting.contains("quit")) {
+            if (!msgIncome.contains("hello server") && !msgIncome.contains("quit")) {
                 out.print("Server: ");
                 out.println("Listening...");
             }
+            System.out.println("User said: " + msgIncome);
+            System.out.println("IP: " + adressUser);
+            System.out.println("Port: " + portUser);
+            System.out.println();
+
         }
     }
 
