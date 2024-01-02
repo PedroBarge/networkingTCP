@@ -12,7 +12,7 @@ public class Server {
         serverSocket = new ServerSocket(port);
         boolean isRuning = true;
         newSocket = serverSocket.accept();
-        Scanner scanner = new Scanner(System.in);
+        System.out.println("Client accepted");
 
         out = new PrintWriter(newSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(newSocket.getInputStream()));
